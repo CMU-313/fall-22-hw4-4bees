@@ -1,0 +1,85 @@
+openapi: 3.0.3
+info:
+  title: Teedy Microservice API Documentation
+  description: |-
+    This is the API documention for a Teedy microservice that predicts which applicants are more likely to succeed, helping the new graduate students admissions process.
+  version: 1.0.11
+tags:
+  - name: predict
+    description: Predict whether applicant is likely to succeed or not
+paths:
+  /predict:
+    post:
+      tags:
+        - predict
+      summary: Predict whether applicant is likely to succeed or not
+      description: Predicts whether an applicant, based on certain attributes, is likely to succeed or not
+      operationId: predictApplicant
+      parameters:
+        - name: G1
+          in: query
+          description: Student's first period grade. For valid response try numbers with value >= 0 or <= 20. Other values will generate exceptions.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 0
+            maximum: 20
+        - name: G2
+          in: query
+          description: Student's second period grade. For valid response try numbers with value >= 0 or <= 20. Other values will generate exceptions.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 0
+            maximum: 20
+        - name: studytime
+          in: query
+          description: Student's weekly study time. For valid response try numbers with value >= 1 or <= 4. Other values will generate exceptions.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+            maximum: 4
+        - name: failures
+          in: query
+          description: Student's number of past class failures. For valid response try numbers with value >= 1 or <= 4. Other values will generate exceptions.
+          required: true
+          explode: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+            maximum: 4
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  variablesUsed:
+                    type: string
+                    description: Notes what variables were used to predict
+                    example: 'Variables G1, G2, studytime, and failures used to predict.'
+                  returnMsg:
+                    type: string
+                    description: Return message after predicting an applicant's likelihood of success
+                    example: 'Applicant is likely to succeed.'
+        '400':
+          description: Invalid input(s)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  returnMsg:
+                    type: string
+                    description: Return message after user inputs invalid or missing data
+                    example: 'Please provide valid inputs.'
