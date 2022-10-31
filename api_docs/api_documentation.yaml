@@ -5,34 +5,9 @@ info:
     This is the API documention for a Teedy microservice that predicts which applicants are more likely to succeed, helping the new graduate students admissions process.
   version: 1.0.11
 tags:
-  - name: train
-    description: Train the model
   - name: predict
     description: Predict whether applicant is likely to succeed or not
-  - name: wipe
-    description: Remove the model
 paths:
-  /train:
-    get:
-      tags:
-        - train
-      summary: Train model
-      description: Train model with historical dataset of student performance
-      operationId: trainModel
-      responses:
-        '200':
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  returnMsg:
-                    type: string
-                    description: Return message after training model
-                    example: 'Trained in 1 sec. Model training score: 70%'
-        '400':
-          description: Invalid status value
   /predict:
     post:
       tags:
@@ -89,22 +64,16 @@ paths:
               schema:
                 type: object
                 properties:
+                  variablesUsed:
+                    type: string
+                    description: Notes what variables were used to predict
+                    example: 'Variables G1, G2, studytime, and failures used to predict.'
                   returnMsg:
                     type: string
                     description: Return message after predicting an applicant's likelihood of success
                     example: 'Applicant is likely to succeed.'
         '400':
-          description: Invalid status value
-  /wipe:
-    get:
-      tags:
-        - wipe
-      summary: Wipe model
-      description: Wipe the trained model
-      operationId: wipeModel
-      responses:
-        '200':
-          description: successful operation
+          description: Invalid input(s)
           content:
             application/json:
               schema:
@@ -112,7 +81,5 @@ paths:
                 properties:
                   returnMsg:
                     type: string
-                    description: Return message after wiping model
-                    example: 'Model wiped'
-        '400':
-          description: Invalid status value
+                    description: Return message after user inputs invalid or missing data
+                    example: 'Please provide valid inputs.'
