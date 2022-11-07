@@ -36,9 +36,9 @@ def configure_routes(app):
             'studytime': pd.Series(studytime),
             'failures': pd.Series(failures)
         })
-        query = pd.get_dummies(query_df)
+        # query = pd.get_dummies(query_df)
         # case on prediction: 0 - not qualified; 1 - qualified 
-        prediction = clf.predict(query)
+        prediction = clf.predict(query_df)
         if int(np.ndarray.item(prediction)) == 0: 
             return jsonify(
                 {"variablesUsed": "Variables G1, G2, studytime, and failures used to predict.",
@@ -55,7 +55,7 @@ def configure_routes(app):
         if int(l[2]) < 0 or int(l[2]) > 4: return False
         if int(l[3]) < 0 or int(l[3]) > 4: return False
         return True
-        
+
 # sample input
 # http://127.0.0.1:5000/predict?G1=17&G2=19&failures=3&studytime=2
 
