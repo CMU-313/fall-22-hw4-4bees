@@ -103,3 +103,9 @@ If you're not in the Pipenv shell, then execute the following command from the `
 ```terminal
 pipenv run pytest
 ```
+
+## Model Training
+
+The features G1 (the applicant’s first-period grade), G2 (the applicant’s second-period grade), failures (number of past class failures), and studytime (weekly study time on a scale of 1-4) are used to train the model using a random forest classifier. We retrained the model by implementing cross validation, splitting the dataset into training set (70%) and testing set (30%), and running the model with different sets of features to compare mean accuracies and the f1 scores. 
+
+The final retrained model performs better than the baseline model and outputs a mean accuracy above 95% and a f1 score above 90% on average after multiple tries on the testing set.
